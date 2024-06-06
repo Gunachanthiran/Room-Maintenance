@@ -1,0 +1,107 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}
+    <title>Calculate Expenses</title>
+    {% endblock %}
+{% block content %}
+<div class="nk-block nk-block-lg">
+    <div class="nk-block-head">
+        <div class="nk-block-head-content">
+            <h4 class="title nk-block-title">Calculate Expenses</h4>
+        </div>
+    </div>
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <div class="card-head">
+                <h7 class="card-title">CALCULATE EXPENSES</h7>
+            </div>
+            <form method="get" id="calculate-expense-form">
+                <div class="row g-2">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Choose Month - {{ year }}</label>
+                            <div class="form-control-wrap">
+                                <div class="form-icon form-icon-right">
+                                    <em class="icon ni ni-calendar-alt"></em>
+                                </div>
+                                <select class="form-control " name="month" id="month" required>
+                                    <option value="">Choose Month</option>
+                                    {% for month in months %}
+                                    <option value="{{ month }}">{{ month }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br><br>
+            {% if messages %}
+                    <h5>{{ get_month }} Month - Total Expenses ₹{{this_month_expense}}</h5>
+                    <p style="color: red;">{{ messages }}. Please Check Number Of Days</p>
+                {% else %}
+                    <h5>{{ get_month }} Month - Total Expenses ₹{{this_month_expense}}</h5>
+                {% endif %}
+            <br><br>
+            <form method="get">
+                <div class="table-responsive">
+                    <table class="mb-0 table">
+                        <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Name</th>
+                            <th>Per Day</th>
+                            <th>No of Day</th>
+                            <th>Amount To paid</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% if roommate_amt %}
+                                {% for x in roommate_amt %}
+                                    <tr>
+                                        {% if get_month is None %}
+                                            <td style="color: red;">Please Choose Month</td>
+                                        {% else %}
+                                            <td>{{ get_month }} </td>
+                                        {% endif %}
+                                        <td>{{ x.0 }}</td>
+                                        <td>₹ {{ per_day }}</td>
+                                        <td style="width: 150px;">
+                                            <input type="number" min="1" max="{{last_month}}" value="{{x.1}}" class="form-control" name="no_of_days" id="" required>
+                                        </td>
+                                        <td>₹ {{ x.2 }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                {% for roommate in roommates %}
+                                    <tr>
+                                        {% if get_month is None %}
+                                            <td style="color: red;">Please Choose Month</td>
+                                        {% else %}
+                                            <td>{{ get_month }}</td>
+                                        {% endif %}
+                                        <td>{{ roommate.name }}</td>
+                                        <td>{{ per_day }}</td>
+                                        <td style="width: 150px;">
+                                            <input type="number" min="1" max="{{last_month}}" value="{{last_month}}" class="form-control" name="no_of_days" id="" required>
+                                        </td>
+                                        <td>-</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                {% if get_month is not None %}
+                    <button class="mt-2 btn btn-primary">Calculate</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

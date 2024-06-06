@@ -1,0 +1,174 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}
+    <title>Dashboard</title>
+    {% endblock %}
+{% block content %}
+
+<div class="nk-content">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block-head nk-block-head-sm mb-4">
+                    <div class="nk-block-between">
+                        <div class="nk-block-head-content">
+                            <h3 class="nk-block-title page-title">Admin Dashboard</h3>
+                            <div class="nk-block-des text-soft">
+                                <p>Welcome to Admin Dashboard</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row containing all cards side by side -->
+                <div class="nk-block mb-4">
+                    <div class="row g-gs">
+                        <!-- Roommates and Count -->
+                        <div class="col-md-4 mb-4">
+                            <div class="card card-bordered card-full bg-light text-white">
+                                <div class="card-inner">
+                                    <div class="card-title-group align-start mb-0">
+                                        <div class="card-title">
+                                            <h6 class="subtitle">Total Roommates</h6>
+                                        </div>
+                                        <div class="card-tools">
+                                            <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip" data-bs-placement="left" title="Total Roommates"></em>
+                                        </div>
+                                    </div>
+                                    <div class="card-amount">
+                                        <span class="amount">{{ roommate }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="card card-bordered card-full bg-light text-white">
+                                <div class="card-inner">
+                                    <div class="card-title-group align-start mb-0">
+                                        <div class="card-title">
+                                            <h6 class="subtitle">Food Expenses Amount</h6>
+                                        </div>
+                                        <div class="card-tools">
+                                            <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip" data-bs-placement="left" title="Food Expenses Amount"></em>
+                                        </div>
+                                    </div>
+                                    <div class="card-amount">
+                                        <span class="amount"><em class="icon ni ni-sign-inr"></em>{{last_month_expense|floatformat:2}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="card card-bordered card-full bg-light text-white">
+                                <div class="card-inner">
+                                    <div class="card-title-group align-start mb-0">
+                                        <div class="card-title">
+                                            <h6 class="subtitle">PubBill Amount ({{ last_date }})</h6>
+                                        </div>
+                                        <div class="card-tools">
+                                            <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip" data-bs-placement="left" title="PubBill Amount"></em>
+                                        </div>
+                                    </div>
+                                    <div class="card-amount">
+                                        <span class="amount"><em class="icon ni ni-sign-inr"></em>{{index_pub_total|floatformat:2}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Roommates Details Table -->
+                <div class="card card-bordered mb-4">
+                    <div class="card-inner">
+                       <div class="card-head">
+                          <h5 class="card-title">Choose Month ({{ year }})</h5>
+                       </div>
+                       <form enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="col-md-3">
+                                <div class="position-relative form-group">
+                                    <select name="month" class="form-control" required>
+                                        <option value="">Choose Month</option>
+                                        {% for month in months %}
+                                            <option value="{{month}}">{{month}}</option>
+                                        {% endfor %}
+                                    </select>                               
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="mt-2 btn btn-primary" type="submit" value="Search">
+                            </div>
+                        </div>
+                       </form>
+                    </div>
+                 </div>
+
+                <!-- Roommates Details Table -->
+                <div class="nk-block nk-block-lg">
+                    <div class="nk-block-head mb-4">
+                       <div class="nk-block-head-content">
+                          <h4 class="nk-block-title">Roommates</h4>
+                       </div>
+                    </div>
+                    <div class="card card-bordered card-preview">
+                       <div class="card-inner">
+                          <table class="datatable-init nowrap nk-tb-list nk-tb-ulist" data-auto-responsive="false">
+                             <thead>
+                                <tr class="nk-tb-item nk-tb-head">
+                                   <th class="nk-tb-col nk-tb-col-check">
+                                      <div class="custom-control custom-control-sm custom-checkbox notext">
+                                          <input type="checkbox" class="custom-control-input" id="uid">
+                                          <label class="custom-control-label" for="uid"></label>
+                                      </div>
+                                   </th>
+                                   <th class="nk-tb-col"><span class="sub-text">Name</span></th>
+                                   <th class="nk-tb-col tb-col-mb"><span class="sub-text">Food Expense<br>({{ last_date }})</span></th>
+                                   <th class="nk-tb-col tb-col-md"><span class="sub-text">PUB Bill</span></th>
+                                   <th class="nk-tb-col tb-col-lg"><span class="sub-text">Total Amount</span></th>
+                                   <th class="nk-tb-col tb-col-lg"><span class="sub-text">Purchase Amount</span></th>
+                                   <th class="nk-tb-col tb-col-lg"><span class="sub-text">Balance Amount<br>(Total-Purchase)</span></th>
+                                   <th class="nk-tb-col nk-tb-col-tools text-end"></th>
+                                </tr>
+                             </thead>
+                             <tbody>
+                                {% for exp in datas %}
+                                <tr class="nk-tb-item">
+                                   <td class="nk-tb-col nk-tb-col-check">
+                                      <div class="custom-control custom-control-sm custom-checkbox notext">
+                                          <input type="checkbox" class="custom-control-input" id="uid{{ forloop.counter }}">
+                                          <label class="custom-control-label" for="uid{{ forloop.counter }}"></label>
+                                      </div>
+                                   </td>
+                                   <td class="nk-tb-col">
+                                      <div class="user-card">
+                                         <div class="user-avatar bg-dim-primary d-none d-sm-flex">
+                                             <span>{{ exp.name.name.0 }}</span>
+                                         </div>
+                                         <div class="user-info">
+                                             <span class="tb-lead">{{ exp.name.name }}<span class="dot dot-success d-md-none ms-1"></span></span>
+                                         </div>
+                                      </div>
+                                   </td>
+                                   <td class="nk-tb-col tb-col-mb"><span>{{ exp.food_expense|floatformat:2 }}</span></td>
+                                   <td class="nk-tb-col tb-col-md"><span>{{ exp.pub|floatformat:2 }}</span></td>
+                                   <td class="nk-tb-col tb-col-lg"><span>{{ exp.total_paid_pub|floatformat:2 }}</span></td>
+                                   <td class="nk-tb-col tb-col-lg"><span>{{ exp.purchase|floatformat:2 }}</span></td>
+                                   <td class="nk-tb-col tb-col-lg"><span>{{ exp.balance|floatformat:2 }}</span></td>
+                                   <td class="nk-tb-col nk-tb-col-tools text-end"></td>
+                                </tr>
+                                {% endfor %}
+                             </tbody>
+                          </table>
+                       </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

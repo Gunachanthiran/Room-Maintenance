@@ -1,0 +1,162 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}
+    <title>Pubbill</title>
+    {% endblock %}
+{% block content %}
+<div class="nk-block nk-block-lg">
+    <div class="nk-block-head">
+        <div class="nk-block-head-content">
+            <h4 class="title nk-block-title">Pub Bill</h4>
+        </div>
+    </div>
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <div class="card-head">
+                <h5 class="card-title">Pub Bill</h5>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="form-label">Previous EB Date</label>
+                            <div class="form-control-wrap">
+                                <div class="form-icon form-icon-right"><em class="icon ni ni-calendar-alt"></em></div>
+                                <input type="text" class="form-control date-picker" data-date-format="yyyy-mm-dd" value="{{ prev_date|default:'' }}" name="pre_date" placeholder="YYYY-MM-DD" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="form-label">Previous Total Reading</label>
+                            <div class="form-control-wrap">
+                                <input type="number" step="0.01" min="0" max="100000" class="form-control" name="prev_read" value="{{ get_bill.prev_read|default:'' }}" placeholder="Enter Previous Month Units" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="form-label">Current EB Date</label>
+                            <div class="form-control-wrap">
+                                <div class="form-icon form-icon-right"><em class="icon ni ni-calendar-alt"></em></div>
+                                <input type="text" class="form-control date-picker" data-date-format="yyyy-mm-dd" name="cur_date" value="{{ cur_date|default:'' }}" placeholder="YYYY-MM-DD" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="form-label">Current Total Reading</label>
+                            <div class="form-control-wrap">
+                                <input type="number" step="0.01" min="0" max="100000" class="form-control" name="cur_read" value="{{ get_bill.cur_read|default:'' }}" placeholder="Enter Current Month Units" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="form-label">EB Unit Cost</label>
+                            <div class="form-control-wrap">
+                                <input type="number" step="0.01" min="0" max="100000" class="form-control" name="unit_cost" value="{{ get_bill.total_units|default:'' }}" placeholder="Enter EB Unit Cost" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="form-label">Refuse Removal Amount</label>
+                            <div class="form-control-wrap">
+                                <input type="number" step="0.01" min="0" max="100000" class="form-control" name="removal_amt" value="{{ get_bill.refuse_amt|default:'' }}" placeholder="Enter Refuse Removal Amount" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="form-label">Water Utility Amount</label>
+                            <div class="form-control-wrap">
+                                <input type="number" step="0.01" min="0" max="100000" class="form-control" name="water_amt" value="{{ get_bill.water_amt|default:'' }}" placeholder="Enter Water Utility Amount" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="form-label">GST</label>
+                            <div class="form-control-wrap">
+                                <input type="number" step="0.01" min="0" max="100000" class="form-control" name="gst" value="{{ get_bill.gst|default:'' }}" placeholder="Enter GST" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="nk-block nk-block-lg">
+    <div class="nk-block-head">
+        <div class="nk-block-head-content">
+            <h4 class="title nk-block-title">Pub Bill</h4>
+        </div>
+    </div>
+    <div class="card card-bordered card-preview">
+        <div class="card-inner">
+            <div class="table-responsive">
+                <table class="datatable-init nowrap nk-tb-list nk-tb-ulist" data-auto-responsive="false">
+                    <thead>
+                        <tr class="nk-tb-item nk-tb-head">
+                            <th class="nk-tb-col"><span class="sub-text">Previous<br>Date</span></th>
+                            <th class="nk-tb-col tb-col-mb"><span class="sub-text">Previous<br>Reading</span></th>
+                            <th class="nk-tb-col tb-col-md"><span class="sub-text">Current<br>Date</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">Current<br>Reading</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">Total<br>Units</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">Refuse<br>Removal</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">Water<br>Utility</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">GST</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">Total<br>Amount</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">Merge Food<br>Expense - {{ year }}</span></th>
+                            <th class="nk-tb-col nk-tb-col-tools text-end"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bill in pubbill %}
+                        <tr class="nk-tb-item">
+                            <td class="nk-tb-col tb-col-mb"><span>{{ bill.pre_date }}</span></td>
+                            <td class="nk-tb-col tb-col-md"><span>{{ bill.prev_read }}</span></td>
+                            <td class="nk-tb-col tb-col-md"><span>{{ bill.cur_date }}</span></td>
+                            <td class="nk-tb-col tb-col-mb"><span>{{ bill.cur_read }}</span></td>
+                            <td class="nk-tb-col tb-col-mb"><span>{{ bill.total_units }}</span></td>
+                            <td class="nk-tb-col tb-col-mb"><span>{{ bill.refuse_amt }}</span></td>
+                            <td class="nk-tb-col tb-col-mb"><span>{{ bill.water_amt }}</span></td>
+                            <td class="nk-tb-col tb-col-mb"><span>{{ bill.gst }}</span></td>
+                            <td class="nk-tb-col tb-col-mb"><span>{{ bill.total_amt }}</span></td>
+                            <td>
+                                <form method="get" class="form-inline">
+                                    <select name="month" class="form-control form-control-sm mr-2" required>
+                                        <option value="">Choose Month</option>
+                                        {% for month in months %}
+                                            <option value="{{ month }}{{ bill.id }}">{{ month }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <input type="hidden" name="year" value="{{ year }}">
+                                    <input type="submit" class="btn btn-secondary btn-sm" value="ADD">
+                                </form>
+                            </td>
+                            <td class="nk-tb-col nk-tb-col-tools">
+                                <ul class="nk-tb-actions gx-1">
+                                    <li class="nk-tb-action-hidden"><a href="/pub-edit/{{ bill.id }}" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><em class="icon ni ni-edit"></em></a></li>
+                                    <li class="nk-tb-action-hidden"><a href="/pub-delete/{{ bill.id }}" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><em class="icon ni ni-trash-alt"></em></a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}
+    <title>Add Expenses</title>
+    {% endblock %}
+{% block content %}
+<div class="nk-block nk-block-lg">
+   <div class="nk-block-head">
+      <div class="nk-block-head-content">
+         <h4 class="title nk-block-title">Add Expenses</h4>
+      </div>
+   </div>
+   <div class="card card-bordered">
+      <div class="card-inner">
+          <form id="quickForm" method="POST">
+              {% csrf_token %}
+              <div class="row g-gs">
+                  <div class="col-md-6 mb-4">
+                      <div class="form-group">
+                          <label class="form-label" for="fw-nationality">Name</label>
+                          <div class="form-control-wrap">
+                              <div class="form-control-select">
+                                  <select class="form-control required" data-msg="Required" id="fw-nationality" name="name" required>
+                                      <option>Select Name</option>
+                                      {% for roommate in roommates %}
+                                          {% if expense.name.id == roommate.id %}
+                                              <option value="{{ roommate.id }}" selected>{{ roommate.name }}</option>
+                                          {% else %}
+                                              <option value="{{ roommate.id }}">{{ roommate.name }}</option>
+                                          {% endif %}
+                                      {% endfor %}
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-4">
+                      <div class="form-group">
+                          <label class="form-label">Date</label>
+                          <div class="form-control-wrap">
+                              <div class="form-icon form-icon-right"><em class="icon ni ni-calendar-alt"></em></div>
+                              <input type="text" class="form-control date-picker" data-date-format="yyyy-mm-dd" value="{{ formatted_date }}" name="date" id="date" placeholder="YYYY-MM-DD" required>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-4">
+                      <div class="form-group">
+                          <label class="form-label" for="fva-item-name">Item Name</label>
+                          <div class="form-control-wrap">
+                              <input type="text" name="item_name" value="{{ expense.item_name }}" class="form-control" id="item_name" placeholder="Enter Item Name" required>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-4">
+                      <div class="form-group">
+                          <label class="form-label" for="fva-full-name">Item Price</label>
+                          <div class="form-control-wrap">
+                              <div class="input-group">
+                                  <div class="input-group-prepend"><span class="input-group-text"> ₹ </span></div>
+                                  <input type="text" name="item_price" value="{{ expense.item_price }}" class="form-control" id="item_price" placeholder="Enter Item price" required>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-2">
+                      <div class="form-group">
+                          <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+                      </div>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+  
+</div>
+<div class="nk-block nk-block-lg">
+   <div class="nk-block-head">
+   </div>
+   <div class="card card-bordered">
+      <div class="card-inner">
+         <div class="card-head">
+            <h5 class="card-title"></h5>
+         </div>
+         <form action="#">
+            <div class="row g-2">
+               <div class="col-sm-3">
+                  <div class="form-group">
+                     <label class="form-label">Date</label>
+                     <div class="form-control-wrap">
+                        <div class="form-icon form-icon-right"><em class="icon ni ni-calendar-alt"></em></div>
+                        <input type="text" class="form-control date-picker" data-date-format="yyyy-mm-dd" name="month_year" id="month_year" placeholder="YYYY-MM-DD" required>
+                     </div>
+                  </div>
+               </div>               
+               <div class="col-12">
+                  <div class="form-group"><button type="submit" class="btn btn-lg btn-primary">Submit</button></div>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="nk-block nk-block-lg">
+   <div class="nk-block-head">
+      <div class="nk-block-head-content">
+         <h4 class="nk-block-title">Expenses</h4>
+      </div>
+   </div>
+   <div class="card card-bordered card-preview">
+      <div class="card-inner">
+         <table class="datatable-init nowrap nk-tb-list nk-tb-ulist" data-auto-responsive="false">
+            <thead>
+               <tr class="nk-tb-item nk-tb-head">
+                  <th class="nk-tb-col nk-tb-col-check">
+                     <div class="custom-control custom-control-sm custom-checkbox notext"><input type="checkbox" class="custom-control-input" id="uid"><label class="custom-control-label" for="uid"></label></div>
+                  </th>
+                  <th class="nk-tb-col"><span class="sub-text">Name</span></th>
+                  <th class="nk-tb-col tb-col-mb"><span class="sub-text">Date</span></th>
+                  <th class="nk-tb-col tb-col-md"><span class="sub-text">Item Name</span></th>
+                  <th class="nk-tb-col tb-col-lg"><span class="sub-text">Item Price</span></th>
+                  <th class="nk-tb-col nk-tb-col-tools text-end"></th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for exp in expenses %}
+               <tr class="nk-tb-item">
+                  <td class="nk-tb-col nk-tb-col-check">
+                     <div class="custom-control custom-control-sm custom-checkbox notext"><input type="checkbox" class="custom-control-input" id="uid1"><label class="custom-control-label" for="uid1"></label></div>
+                  </td>
+                  <td class="nk-tb-col">
+                     <div class="user-card">
+                        <div class="user-avatar bg-dim-primary d-none d-sm-flex"><span>{{ exp.name.name|slice:":1" }}</span></div>
+                        <div class="user-info"><span class="tb-lead">{{ exp.name.name }}<span class="dot dot-success d-md-none ms-1"></span></span><span>{{ exp.name.email }}</span></div>
+                     </div>
+                  </td>
+                  <td class="nk-tb-col tb-col-mb"><span>{{ exp.date }}</span></td>
+                  <td class="nk-tb-col tb-col-md"><span>{{ exp.item_name }}</span></td>
+                  <td class="nk-tb-col tb-col-md"><span>{{ exp.item_price }}</span></td>
+                  <td class="nk-tb-col nk-tb-col-tools">
+                     <ul class="nk-tb-actions gx-1">
+                        <li class="nk-tb-action-hidden"><a href="/expense-edit/{{exp.id}}" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><em class="icon ni ni-edit"></em></a></li>
+                        <li class="nk-tb-action-hidden"><a href="/expense-delete/{{exp.id}}" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><em class="icon ni ni-trash-alt"></em></a></li>
+                     </ul>
+                  </td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
+{% endblock %}

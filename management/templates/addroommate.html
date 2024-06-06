@@ -1,0 +1,115 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}
+    <title>Add Roommate</title>
+    {% endblock %}
+{% block content %}
+<div class="nk-block nk-block-lg">
+   <div class="nk-block-head">
+      <div class="nk-block-head-content">
+         <h4 class="title nk-block-title">Add Roommate</h4>
+      </div>
+   </div>
+   <div class="card card-bordered">
+      <div class="card-inner">
+          <form id="quickForm" method='POST'>
+              {% csrf_token %}
+              <div class="row g-3">
+                  <div class="col-md-6 mb-3">
+                      <div class="form-group">
+                          <label class="form-label" for="fva-full-name">Full Name</label>
+                          <div class="form-control-wrap">
+                              <input type="text" name="name" class="form-control" value="{{ roommate.name }}" id="name" placeholder="Enter Name" required>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                      <div class="form-group">
+                          <label class="form-label" for="fva-email">Email address</label>
+                          <div class="form-control-wrap">
+                              <div class="form-icon form-icon-right"><em class="icon ni ni-mail"></em></div>
+                              <input type="email" name="email" class="form-control" value="{{ roommate.email }}" id="email" placeholder="Enter email">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                      <div class="form-group">
+                          <label class="form-label" for="fv-phone">Phone</label>
+                          <div class="form-control-wrap">
+                              <div class="input-group">
+                                  <div class="input-group-prepend"><span class="input-group-text" id="fv-phone">+91</span></div>
+                                  <input type="number" name="number" class="form-control" value="{{ roommate.number }}" id="number" placeholder="Enter Number" required>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                      <div class="form-group">
+                          <label class="form-label" for="fva-full-name">City</label>
+                          <div class="form-control-wrap">
+                              <input type="text" name="city" class="form-control" value="{{ roommate.city }}" id="city" placeholder="Enter City" required>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-2">
+                      <div class="form-group">
+                          <button type="submit" class="btn btn-lg btn-primary">Save Information</button>
+                      </div>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+  
+</div>
+
+<div class="nk-block nk-block-lg">
+   <div class="nk-block-head">
+      <div class="nk-block-head-content">
+         <h4 class="nk-block-title">Roommates</h4>
+      </div>
+   </div>
+   <div class="card card-bordered card-preview">
+      <div class="card-inner">
+         <table class="datatable-init nowrap nk-tb-list nk-tb-ulist" data-auto-responsive="false">
+            <thead>
+               <tr class="nk-tb-item nk-tb-head">
+                  <th class="nk-tb-col nk-tb-col-check">
+                     <div class="custom-control custom-control-sm custom-checkbox notext"><input type="checkbox" class="custom-control-input" id="uid"><label class="custom-control-label" for="uid"></label></div>
+                  </th>
+                  <th class="nk-tb-col"><span class="sub-text">Name</span></th>
+                  <th class="nk-tb-col tb-col-mb"><span class="sub-text">Number</span></th>
+                  <th class="nk-tb-col tb-col-md"><span class="sub-text">E-mail</span></th>
+                  <th class="nk-tb-col tb-col-lg"><span class="sub-text">City</span></th>
+                  <th class="nk-tb-col nk-tb-col-tools text-end"></th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for room in roommates %}
+               <tr class="nk-tb-item">
+                  <td class="nk-tb-col nk-tb-col-check">
+                     <div class="custom-control custom-control-sm custom-checkbox notext"><input type="checkbox" class="custom-control-input" id="uid1"><label class="custom-control-label" for="uid1"></label></div>
+                  </td>
+                  <td class="nk-tb-col">
+                     <div class="user-card">
+                        <div class="user-avatar bg-dim-primary d-none d-sm-flex"><span>{{ room.name|slice:":1" }}</span></div>
+                        <div class="user-info"><span class="tb-lead">{{ room.name }}<span class="dot dot-success d-md-none ms-1"></span></span><span class="tb-status text-success">{{ room.email }}</span></div>
+                     </div>
+                  </td>
+                  <td class="nk-tb-col tb-col-mb">{{room.number}}</td>
+                  <td class="nk-tb-col tb-col-md"><span>{{ room.date }}</span></td>
+                  <td class="nk-tb-col tb-col-md"><span>{{room.city}}</span></td>
+                  <td class="nk-tb-col nk-tb-col-tools">
+                     <ul class="nk-tb-actions gx-1">
+                        <li class="nk-tb-action-hidden"><a href="/roommate-edit/{{room.id}}" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><em class="icon ni ni-edit"></em></a></li>
+                        <li class="nk-tb-action-hidden"><a href="/add-roommate/{{room.id}}" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><em class="icon ni ni-trash-alt"></em></a></li>
+                     </ul>
+                  </td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
+{% endblock %}
