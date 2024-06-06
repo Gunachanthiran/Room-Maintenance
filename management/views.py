@@ -462,7 +462,7 @@ class PubBill(View):
             return redirect("/pub-bill")
 
         total_units = max(cur_read - prev_read, 0)
-        total = (total_units * 0.1495) + removal_amt + water_amt
+        total = (total_units * 4.50) + removal_amt + water_amt
         add_gst = (total * gst) / 100
         total += add_gst
         total = round(total, 2)
